@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pomodoro Timer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="work">
+<div class="wrap">
+  <header>
+    <h1>🍅 Pomodoro Focus</h1>
+    <div class="tools">
+      <button class="icon" id="bDistract" title="App Distraction Saver">🛡️ Focus Shield</button>
+      <button class="icon" id="bTheme" title="Dark / Light">🌙</button>
+      <button class="icon" id="bSet" title="Settings">⚙️</button>
+    </div>
+  </header>
+ 
+  <div class="grid">
+    <div>
+      <div class="card timer">
+        <div class="mode" id="modeLabel">Focus</div>
+        <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+        <div class="ringbox">
+          <svg viewBox="0 0 300 300"><circle class="bg" cx="150" cy="150" r="130"/><circle class="fg" id="fg" cx="150" cy="150" r="130"/></svg>
+          <div class="center"><div class="time" id="time">25:00</div><div class="cur" id="cur">No task selected</div></div>
+        </div>
+        <div class="ctrl">
+          <button class="b p" id="bStart">▶ Start</button>
+          <button class="b" id="bPause">⏸ Pause</button>
+          <button class="b" id="bReset">↺ Reset</button>
+          <button class="b" id="bSkip">⏭ Skip</button>
+        </div>
+        <div class="strict"><label><input type="checkbox" id="strictQuick"> 🔒 Strict mode (locked until focus session ends)</label></div>
+      </div>
+      <div class="card">
+        <h2>Today</h2>
+        <div class="stats">
+          <div class="stat"><b id="cycles">0</b><small>full cycles (4 rounds)</small></div>
+          <div class="stat"><b id="pomos">0</b><small>pomodoros done</small></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div>
+      <div class="card">
+        <h2>Tasks</h2>
+        <div class="row"><input type="text" id="taskIn" placeholder="What will you work on?" maxlength="80"><button class="b p" id="taskAdd">Add</button></div>
+        <ul id="tasks"></ul>
+        <div class="note">Tap a task's name to make it the current session task. Tick it when done.</div>
+      </div>
+      <div class="card">
+        <h2>Ambient sound</h2>
+        <div class="amb" id="amb">
+          <button class="b on" data-k="off">Off</button><button class="b" data-k="rain">🌧 Rain</button>
+          <button class="b" data-k="cafe">☕ Café</button><button class="b" data-k="white">〰 White</button>
+        </div>
+        <input type="range" id="vol" min="0" max="1" step="0.05" aria-label="Ambient volume">
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<dialog id="dSet">
+  <h3>⚙️ Custom time settings (minutes)</h3>
+  <label>Focus session</label><input type="number" id="sWork" min="1" max="180">
+  <label>Short break (after rounds 1 &amp; 3)</label><input type="number" id="sShort" min="1" max="60">
+  <label>Medium break (after round 2)</label><input type="number" id="sMid" min="1" max="60">
+  <label>Long break (after round 4)</label><input type="number" id="sLong" min="1" max="120">
+  <label><input type="checkbox" id="sSound"> Play bell when a session ends</label>
+  <div class="ctrl"><button class="b" id="sCancel">Cancel</button><button class="b p" id="sSave">Save</button></div>
+</dialog>
+ 
+<dialog id="dShield">
+  <h3>🛡️ App Distraction Saver</h3>
+  <div class="row"><input type="text" id="blkIn" placeholder="App, site or folder to avoid"><button class="b p" id="blkAdd">Add</button></div>
+  <div class="ctrl" style="justify-content:flex-start"><button class="b" id="pickFolder">📁 Pick a folder…</button><button class="b" id="askNotif">🔔 Allow reminders</button></div>
+  <div class="chips" id="chips"></div>
+  <label><input type="checkbox" id="strictModal"> 🔒 Strict mode: block closing, pause, reset and skip during focus</label>
+  <div class="note"><b>Honest limits:</b> a website runs inside a browser sandbox, so it cannot see or shut other apps on your device. This list is your personal "do not open" pledge: while a focus session runs, it nudges you if you leave this tab, and strict mode asks for fullscreen, prompts before the tab is closed, and locks the controls. For real OS-level app blocking, pair it with Focus/Screen Time/Do Not Disturb on your device.</div>
+  <div class="ctrl"><button class="b p" id="shieldClose">Done</button></div>
+</dialog>
+ 
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
